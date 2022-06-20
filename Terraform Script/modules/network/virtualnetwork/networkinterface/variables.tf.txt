@@ -1,0 +1,25 @@
+variable "interface_name" {
+  description = "Name of the vnet to create."
+  type        = string
+  default     = "network"
+}
+variable "resource_group_name" {
+  description = "The name of an existing resource group to be imported."
+  type       = string
+  default    = "GGR1"
+}
+variable "location" {
+
+  type  = string
+  default = "East US"
+}
+variable "ip_configuration_name" {
+  description = "configuration."
+  type        = string
+  default     = "Tconfiguration"
+
+}
+variable "subnet_id" {
+  description = "Virtual network subnet ID"
+  type        = string
+}

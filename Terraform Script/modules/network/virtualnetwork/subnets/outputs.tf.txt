@@ -1,0 +1,4 @@
+output "subnet_id" {
+  description = "Subnetresource"
+  value       = azurerm_subnet.subnet.id
+}

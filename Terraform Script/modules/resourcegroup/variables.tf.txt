@@ -1,0 +1,16 @@
+variable "resource_group_name" {
+  type        = string
+  description = "name of resource group"
+  default = "Govardhanreddy"
+}
+
+variable "location" {
+  type        = string
+default = "East US"
+  description = "location of resource group"
+}
+
+variable "tags" {
+  type    = map(any)
+  default = {}
+}

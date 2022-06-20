@@ -1,0 +1,61 @@
+module "ResourceGroup" {
+  source = "./modules/resourcegroup"
+  resource_group_name = "TerraformExample01"
+  location = "West US"
+}
+
+
+module "Vnet" {
+  source = "./modules/network/virtualnetwork"
+resource_group_name = module.ResourceGroup.rg_name_out
+location = module.ResourceGroup.rg_location_out
+vnet_name = "network"
+address_space  = "10.0.0.0/16"
+depends_on = [module.ResourceGroup]
+  }
+
+
+
+module "Subnet" {
+  source = "./modules/network/virtualnetwork/subnets"
+resource_group_name = module.ResourceGroup.rg_name_out
+vnet_name = module.Vnet.vnet_name
+
+depends_on = [
+    module.ResourceGroup,
+    module.Vnet
+  ]
+
+  }
+
+module "Networkinterface"{
+ source = "./modules/network/virtualnetwork/networkinterface"
+resource_group_name = module.ResourceGroup.rg_name_out
+location = module.ResourceGroup.rg_location_out
+subnet_id  = module.Subnet.subnet_id
+interface_name = "Gnetwork"
+
+depends_on = [
+    module.ResourceGroup,
+    module.Vnet,
+    module.Subnet
+  ]
+
+}
+
+
+module "VM"{
+ source = "./modules/VM"
+network_interface_id = module.Networkinterface.azurerm_network_interface_id
+resource_group_name = module.ResourceGroup.rg_name_out
+location = module.ResourceGroup.rg_location_out
+virtual_machine_size = "Standard_DS1_v2"
+tags = ""
+depends_on = [
+    module.ResourceGroup,
+    module.Vnet,
+    module.Subnet,
+    module.Networkinterface
+  ]
+
+}
